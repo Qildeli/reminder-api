@@ -4,6 +4,6 @@ from django.contrib.auth.models import User
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta: # explain Meta
-        model = User
+        pass
 
 
