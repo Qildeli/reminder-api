@@ -8,7 +8,7 @@ ENV PYTHONUNBUFFERED 1
 WORKDIR /app
 
 # Add the current directory files to the container
-ADD . /app/
+ADD . /app
 
 # Install any needed packages specified in requirements.txt
 RUN pip install -r requirements.txt # or pip install --no-cache-dir -r requirements.txt

@@ -3,5 +3,10 @@ from rest_framework.views import APIView
 
 
 class RegisterAPI(APIView):
-    def create(self):
+    def post(self, request):
+        pass
+
+
+class LoginAPI(APIView):
+    def post(self, request):
         pass

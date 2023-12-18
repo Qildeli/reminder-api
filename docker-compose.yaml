@@ -14,6 +14,8 @@ services:
       - PG_HOST=db
     depends_on:
       - db
+    volumes:
+      - .:/app
 
   db:
     container_name: db
