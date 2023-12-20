@@ -16,7 +16,7 @@ class RegisterSerializer(serializers.ModelSerializer):
         return get_user_model().objects.create_user(**validated_data)
 
 
-class LoginSerializer(serializers.ModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
         fields = '__all__'
