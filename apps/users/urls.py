@@ -4,5 +4,5 @@ from apps.users import views
 
 
 urlpatterns = [
-    path('register/', views.RegisterAPI.as_view())
+    path('register/', views.RegisterAPI.as_view()),
 ]
