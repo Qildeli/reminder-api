@@ -1,6 +1,6 @@
 from django.http import Http404
 from rest_framework.views import APIView
-from .serializers import RegisterSerializer, UserSerializer
+from .serializers import UserSerializer
 from django.contrib.auth import get_user_model
 from rest_framework.response import Response
 from rest_framework import status
@@ -13,7 +13,7 @@ class RegisterAPI(APIView):
     """
     An endpoint to create a new user.
     """
-    serializer_class = RegisterSerializer
+    serializer_class = UserSerializer
 
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
