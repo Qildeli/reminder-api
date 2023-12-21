@@ -40,7 +40,6 @@ class UserDetail(APIView):
     An endpoint to retrieve, update and delete existing users.
     """
     serializer_class = UserSerializer
-    user = user.objects.get()
 
     def get(self, request, pk):
         pass
