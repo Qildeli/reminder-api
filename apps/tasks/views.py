@@ -1,5 +1,7 @@
 from django.http import Http404
+from django.contrib.auth.models import AnonymousUser
 from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import Task
@@ -11,16 +13,17 @@ class TaskList(APIView):
     List all tasks, or create a new task.
     """
     serializer_class = TaskSerializer
+    permission_classes = (IsAuthenticated,)
 
     def get(self, request):
-        tasks = Task.objects.all()
+        tasks = Task.objects.filter(owner=request.user)
         serializer = self.serializer_class(tasks, many=True)
         return Response(serializer.data)
 
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            serializer.save(owner=request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -32,9 +35,9 @@ class TaskDetail(APIView):
     serializer_class = TaskSerializer
 
     @staticmethod
-    def get_object(pk):
+    def get_object(request, pk):
         try:
-            return Task.objects.get(pk=pk)
+            return Task.objects.get(pk=pk, owner=request.user)
         except Task.DoesNotExist:
             raise Http404
 
