@@ -12,9 +12,11 @@ class TaskSerializer(serializers.ModelSerializer):
     def validate(self, attrs):
         attrs = super().validate(attrs)
 
-        due_date = attrs['due_date']
+        due_date = attrs["due_date"]
 
         if due_date < now():
-            raise serializers.ValidationError({"due_date": "Due date cannot be earlier than the creation date."})
+            raise serializers.ValidationError(
+                {"due_date": "Due date cannot be earlier than the creation date."}
+            )
 
         return attrs
