@@ -92,13 +92,14 @@ WSGI_APPLICATION = 'core.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': os.environ.get('DB_DRIVER', 'django.db.backends.postgresql'),
-        'USER': os.environ.get('PG_USER', 'postgres'),
-        'PASSWORD': os.environ.get('PG_PASSWORD', 'postgres'),
-        'NAME': os.environ.get('PG_DB', 'postgres'),
-        'PORT': os.environ.get('PG_PORT', '5432'),
-        'HOST': os.environ.get('PG_HOST', 'localhost'),
+        "USER": os.environ.get("DATABASE_USER"),
+        "PASSWORD": os.environ.get("DATABASE_PASSWORD"),
+        "NAME": os.environ.get("DATABASE_NAME"),
+        "HOST": os.environ.get("DATABASE_HOST"),
+        "PORT": os.environ.get("DATABASE_PORT"),
     }
 }
+
 
 AUTH_USER_MODEL = 'users.CustomUser'
 
