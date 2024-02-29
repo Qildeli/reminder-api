@@ -7,7 +7,7 @@ from .models import Task
 class TaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = Task
-        fields = ["id", "title", "created", "due_date"]
+        fields = ("id", "title", "created", "due_date")
 
     def validate(self, attrs):
         attrs = super().validate(attrs)
