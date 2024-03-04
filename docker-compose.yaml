@@ -28,6 +28,21 @@ services:
     ports:
       - "8000:8000"
 
+  celery:
+    build:
+      context: .
+      dockerfile: dockerfiles/Dockerfile-celery
+    container_name: "api_celery"
+    env_file:
+      - env/.env.dev
+    volumes:
+      - ./:/opt/app
+    depends_on:
+      - pgdb
+      - api
+
+  redis:
+    image: redis:7.0.11-alpine
 
 volumes:
   db_data:
