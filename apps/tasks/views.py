@@ -1,9 +1,9 @@
 from django.http import Http404
-from django.contrib.auth.models import AnonymousUser
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.views import APIView
+
 from .models import Task
 from .serializers import TaskSerializer
 
@@ -12,6 +12,7 @@ class TaskList(APIView):
     """
     List all tasks, or create a new task.
     """
+
     serializer_class = TaskSerializer
     permission_classes = (IsAuthenticated,)
 
@@ -26,13 +27,14 @@ class TaskList(APIView):
         serializer.save(owner=request.user)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
+
 class TaskDetail(APIView):
     """
     Retrieve, update or delete a task instance.
     """
+
     serializer_class = TaskSerializer
 
-    @staticmethod
     def get_object(request, pk):
         try:
             return Task.objects.get(pk=pk, owner=request.user)
