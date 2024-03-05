@@ -2,9 +2,9 @@ version: '3.9'
 
 
 services:
-  pgdb:
+  todo_pgdb:
     image: "postgres:14.3"
-    container_name: pgdb
+    container_name: todo_pgdb
     env_file:
       - env/.env.dev
     ports:
@@ -12,17 +12,17 @@ services:
     volumes:
       - db_data:/var/lib/postgresql/data
 
-  api:
+  todo_api:
     build:
       context: .
       dockerfile: dockerfiles/Dockerfile-dev
-    container_name: api
+    container_name: todo_api
     env_file:
       - env/.env.dev
     volumes:
       - ./:/opt/app
     depends_on:
-      - pgdb
+      - todo_pgdb
     entrypoint: ""
     command: /home/todo-api/docker-entrypoint-dev.sh
     ports:
@@ -32,14 +32,14 @@ services:
     build:
       context: .
       dockerfile: dockerfiles/Dockerfile-celery
-    container_name: "api_celery"
+    container_name: "todo_api_celery"
     env_file:
       - env/.env.dev
     volumes:
       - ./:/opt/app
     depends_on:
-      - pgdb
-      - api
+      - todo_pgdb
+      - todo_api
 
   redis:
     image: redis:7.0.11-alpine

@@ -1,8 +1,9 @@
 from django.http import Http404
 from rest_framework import status
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
+
+from apps.permissions import IsOwner
 
 from .models import Task
 from .serializers import TaskSerializer
@@ -13,8 +14,8 @@ class TaskList(APIView):
     List all tasks, or create a new task.
     """
 
+    permission_classes = (IsOwner,)
     serializer_class = TaskSerializer
-    permission_classes = (IsAuthenticated,)
 
     def get(self, request):
         tasks = Task.objects.filter(owner=request.user)
@@ -33,11 +34,12 @@ class TaskDetail(APIView):
     Retrieve, update or delete a task instance.
     """
 
+    permission_classes = (IsOwner,)
     serializer_class = TaskSerializer
 
-    def get_object(request, pk):
+    def get_object(self, request, pk):
         try:
-            return Task.objects.get(pk=pk, owner=request.user)
+            return Task.objects.get(pk=pk, owner=request.self.user)
         except Task.DoesNotExist:
             raise Http404
 
