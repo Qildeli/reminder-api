@@ -5,9 +5,18 @@ from .models import Task
 
 
 class TaskSerializer(serializers.ModelSerializer):
+
+    owner = serializers.HiddenField(default=serializers.CurrentUserDefault())
+
     class Meta:
         model = Task
-        fields = ("id", "title", "created", "due_date")
+        fields = ("id", "owner", "title", "created", "due_date")
+        read_only_fields = ("id", "owner", "created")
+
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        data["user"] = self.context["request"].user.id
+        return data
 
     def validate(self, attrs):
         attrs = super().validate(attrs)
