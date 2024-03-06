@@ -14,7 +14,7 @@
 ## Start project local
 ### Clone Project to your local environment
 ```bash
-  git clone git@github.com:qildeli/reminder.git
+  git clone git@github.com:qildeli/reminder-api.git
 ```
 
 ### Create virtual environment
