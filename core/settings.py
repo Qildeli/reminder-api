@@ -33,13 +33,14 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     # my apps
     'apps.users',
-    'apps.tasks',
+    'apps.todo',
 
     # third-party
     'rest_framework',
     'rest_framework_simplejwt',
     'drf_spectacular',
     'celery',
+    'django_celery_beat',
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -157,8 +158,8 @@ CACHES = {
 }
 
 # Celery settings
-CELERY_BROKER_URL = "redis://localhost:6379/0"
-CELERY_RESULT_BACKEND = "redis://localhost:6379/0"
+CELERY_BROKER_URL = "redis://redis:6379/0"
+CELERY_RESULT_BACKEND = "redis://redis:6379/1"
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(hours=5),
