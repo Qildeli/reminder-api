@@ -13,6 +13,7 @@ class Task(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     due_date = models.DateTimeField(default=one_week_hence)
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    notified = models.BooleanField(default=False)
 
     def __str__(self):
         return self.title
