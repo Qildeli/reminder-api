@@ -1,23 +1,9 @@
-FROM python:3.11
-
-ENV PYTHONUNBUFFERED 1
-
-RUN mkdir -p /opt/app
-WORKDIR /opt/app
-
-COPY ../requirements.txt /opt/app/
-
-RUN pip install --upgrade pip && pip install -r requirements.txt --no-cache-dir
-
-COPY .. /opt/app/
-
-RUN useradd -ms /bin/bash todo-api
-RUN chown -R todo-api:todo-api /opt/app
-
-ADD scripts/docker-entrypoint-dev.sh /home/todo-api/docker-entrypoint-dev.sh
-ADD scripts/check_service.py /home/todo-api/check_service.py
-
-RUN chmod +x /home/todo-api/docker-entrypoint-dev.sh
-USER todo-api
-
-ENTRYPOINT ["/home/todo-api/docker-entrypoint-dev.sh"]
+FROM python:3.11.5-slim-bullseye
+ENV PIP_DISABLE_PIP_VERSION_CHECK true
+ENV PYTHONDONTWRITEBYTECODE true
+ENV PYTHONUNBUFFERED true
+WORKDIR /code
+COPY ./requirements.txt .
+RUN pip install -r requirements.txt
+COPY . .
+CMD ["celery", "-A", "core", "worker", "--loglevel=INFO", "--beat", "--scheduler","django_celery_beat.schedulers:DatabaseScheduler", "-l", "info"]
