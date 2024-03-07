@@ -5,19 +5,19 @@ from rest_framework.generics import (
 
 from apps.permissions import IsOwner
 
-from .models import Task
-from .serializers import TaskSerializer
+from .models import ToDo
+from .serializers import ToDoSerializer
 
 
 class ListTask(ListCreateAPIView):
     """
-    List all tasks, or create a new task.
+    List all todo, or create a new task.
     """
 
-    serializer_class = TaskSerializer
+    serializer_class = ToDoSerializer
 
     def get_queryset(self):
-        return Task.objects.filter(owner=self.request.user)
+        return ToDo.objects.filter(owner=self.request.user)
 
 
 class RetrieveUpdateDestroyTask(RetrieveUpdateDestroyAPIView):
@@ -26,5 +26,5 @@ class RetrieveUpdateDestroyTask(RetrieveUpdateDestroyAPIView):
     """
 
     permission_classes = (IsOwner,)
-    serializer_class = TaskSerializer
-    queryset = Task.objects.all()
+    serializer_class = ToDoSerializer
+    queryset = ToDo.objects.all()
