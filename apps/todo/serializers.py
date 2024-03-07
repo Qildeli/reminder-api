@@ -1,15 +1,15 @@
 from django.utils.timezone import now
 from rest_framework import serializers
 
-from .models import Task
+from .models import ToDo
 
 
-class TaskSerializer(serializers.ModelSerializer):
+class ToDoSerializer(serializers.ModelSerializer):
 
     owner = serializers.HiddenField(default=serializers.CurrentUserDefault())
 
     class Meta:
-        model = Task
+        model = ToDo
         fields = ("id", "owner", "title", "created", "due_date")
         read_only_fields = ("id", "owner", "created")
 
