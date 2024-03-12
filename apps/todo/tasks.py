@@ -11,12 +11,12 @@ from django.conf import settings
 @shared_task(name='send_email')
 def send_remainder_email():
     """
-    Check if one hour remains until the task deadline and send an email notification if true.
+    Check if one hour remains until the task due date and send an email notification if true.
     """
 
     one_hour_from_now = timezone.now() + timedelta(hours=1)
 
-    todos_to_notify = ToDo.objects.filter(deadline__lte=one_hour_from_now, notified=False)
+    todos_to_notify = ToDo.objects.filter(due_date__lte=one_hour_from_now, notified=False)
 
     for todo in todos_to_notify:
 
@@ -27,5 +27,5 @@ def send_remainder_email():
             recipient_list=[todo.owner.email],
             fail_silently=False
         )
-        todo.notified()
+        todo.notified = True
         todo.save()
