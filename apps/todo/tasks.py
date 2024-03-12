@@ -2,8 +2,9 @@ from datetime import timedelta
 
 from celery import shared_task
 from django.core.mail import send_mail
+from django.utils import timezone
 
-from .models import Task
+from .models import ToDo
 from django.conf import settings
 
 
@@ -13,18 +14,18 @@ def send_remainder_email():
     Check if one hour remains until the task deadline and send an email notification if true.
     """
 
-    one_hour_date_time = Task.due_date - timedelta(hours=1)
+    one_hour_from_now = timezone.now() + timedelta(hours=1)
 
-    tasks_to_notify = Task.objects.filter(deadline__lte=one_hour_date_time, notified=False)
+    todos_to_notify = ToDo.objects.filter(deadline__lte=one_hour_from_now, notified=False)
 
-    for task in tasks_to_notify:
+    for todo in todos_to_notify:
 
         send_mail(
-            subject=f"Reminder {task.title}",
+            subject=f"Reminder for {todo.title}",
             message="This is a reminder for your pending task.",
             from_email=settings.EMAIL_HOST_USER,
-            recipient_list=[task.owner.email],
+            recipient_list=[todo.owner.email],
             fail_silently=False
         )
-        task.notified()
-        task.save()
+        todo.notified()
+        todo.save()
