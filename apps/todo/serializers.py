@@ -10,8 +10,8 @@ class ToDoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ToDo
-        fields = ("id", "owner", "title", "created", "due_date")
-        read_only_fields = ("id", "owner", "created")
+        fields = ("id", "owner", "title", "created", "due_date", "notified")
+        read_only_fields = ("id", "owner", "created", "notified")
 
     def to_representation(self, instance):
         data = super().to_representation(instance)
